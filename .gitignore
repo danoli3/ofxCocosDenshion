@@ -1,13 +1,16 @@
-# Compiled Object files
-*.slo
-*.lo
-*.o
+.DS_Store
 
-# Compiled Dynamic libraries
-*.so
-*.dylib
+*.pbxuser
+#*.perspective
+#*.perspectivev3
 
-# Compiled Static libraries
-*.lai
-*.la
-*.a
+*.mode1v3
+*.mode2v3
+
+xcuserdata/
+*.xccheckout
+*.xcbkptlist
+
+*.xcuserstate
+
+*.xcuserstate
