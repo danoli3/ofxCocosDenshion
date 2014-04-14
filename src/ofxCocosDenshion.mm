@@ -28,6 +28,9 @@ ofxCocosDenshion::~ofxCocosDenshion() {
 
 //--------------------------------------------------
 void ofxCocosDenshion::destroy() {
+    [ofxCocosDenshionSoundManager stopAllSounds];
+    
+    
 	if(sounds.size() != 0) {
 		int howManySounds = sounds.size()-1;
 		for(int i=0;i<=howManySounds;i++) {
@@ -39,6 +42,12 @@ void ofxCocosDenshion::destroy() {
 		}
 	}
     sounds.clear();
+    
+    [ofxCocosDenshionSoundManager unloadBuffer:kASC_Left];
+    [ofxCocosDenshionSoundManager unloadBuffer:kASC_Right];
+    
+    soundCount = 0;
+    
 }
 
 //--------------------------------------------------
@@ -199,6 +208,7 @@ void ofxCocosDenshion::setup() {
 	 The second channel I have reserved for my sound effects.  This is set to 31 because you can
 	 have up to 32 effects at once
 	 */
+    soundCount = 0;
 	NSArray *sourceGroups = [NSArray arrayWithObjects:[NSNumber numberWithInt:1], [NSNumber numberWithInt:31], nil];
 	[sse defineSourceGroups:sourceGroups];
 	
