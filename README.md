@@ -9,6 +9,11 @@ I found that the default ofxiOSSoundPlayer while great for single audio files be
 
 This Very nicely written SoundEngine supports sound effects and background sounds.
 
+Working in live iOS Projects:
+===========
+Freddy's Pass Off: 
+https://itunes.apple.com/au/app/freddys-pass-off/id661017191?mt=8&uo=4&at=11lbfe
+
 To do (Still in progress)
 ===========
 - Background Sound / Music not yet setup in Wrapper
