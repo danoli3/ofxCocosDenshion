@@ -28,8 +28,8 @@ Where to checkout?
 ===========
 For openframeworks:
  
--Checkout in the addons folder like so: 
-```addons/ofxCocosDenshion```
+Checkout in the addons folder like `addons/ofxCocosDenshion`
+
 
 
 
@@ -40,8 +40,8 @@ How to Add addon to existing  project in Xcode?
 
 Add the following Folders to your project from your addons directory.
 
-- ```addons/ofxCocosDenshion/src```
-- ```addons/ofxCocosDenshion/libs```
+- `addons/ofxCocosDenshion/src`
+- `addons/ofxCocosDenshion/libs`
 
 Documentation on Cocos Denshion
 ===========
