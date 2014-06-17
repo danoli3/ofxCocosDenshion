@@ -1,6 +1,8 @@
 ofxCocosDenshion
 ===========
 
+![Screenshot](https://github.com/danoli3/ofxCocosDenshion/raw/master/ofxaddons_thumbnail.png)
+
 Wrapper Class for Cocoas Denshion Sound Player to be used within openFrameWorks.
 
 This currently will work with iOS Projects.
