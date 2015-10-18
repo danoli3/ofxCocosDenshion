@@ -817,7 +817,7 @@ static BOOL _mixerRateSet = NO;
  * or CD_NO_SOURCE if a problem occurs setting up the source
  * 
  */
-- (ALuint)playSound:(int) soundId sourceGroupId:(int)sourceGroupId pitch:(float) pitch pan:(float) pan gain:(float) gain loop:(BOOL) loop {
+- (ALuint)playSound:(int) soundId sourceGroupId:(int)sourceGroupId pitch:(float) pitch offset:(float)offset pan:(float) pan gain:(float) gain loop:(BOOL) loop {
 
 #ifdef CD_DEBUG
     //Sanity check parameters - only in DEBUG
@@ -826,6 +826,7 @@ static BOOL _mixerRateSet = NO;
     NSAssert(sourceGroupId >= 0, @"sourceGroupId can not be negative");
     NSAssert(sourceGroupId < _sourceGroupTotal, @"sourceGroupId exceeds limit");
     NSAssert(pitch > 0, @"pitch must be greater than zero");
+    NSAssert(offset >= 0, @"offset must be positive");
     NSAssert(pan >= -1 && pan <= 1, @"pan must be between -1 and 1");
     NSAssert(gain >= 0, @"gain can not be negative");
 #endif
@@ -858,6 +859,7 @@ static BOOL _mixerRateSet = NO;
         alSourcef(source, AL_GAIN, gain);//Set gain/volume
         float sourcePosAL[] = {pan, 0.0f, 0.0f};//Set position - just using left and right panning
         alSourcefv(source, AL_POSITION, sourcePosAL);
+        alSourcei(source, AL_SEC_OFFSET, offset);
         alGetError();//Clear the error code
         alSourcePlay(source);
         if((lastErrorCode_ = alGetError()) == AL_NO_ERROR) {
@@ -999,8 +1001,16 @@ static BOOL _mixerRateSet = NO;
     }
         
   alSourcePlay(soundId);
-  alGetError();//Clear error in case we stopped any sounds that couldn't be resumed
+  alGetError(); //Clear error in case we stopped any sounds that couldn't be resumed
 }
+
+
+-(void) setTimePositionMS:(ALuint) sourceId offset:(float)offset {
+    NSTimeInterval timeS = offset / 1000.0;
+    alSourcei(sourceId, AL_SEC_OFFSET, timeS);
+    alGetError();
+}
+
 
 - (void) resumeAllSounds {
   for (int i = 0; i < sourceTotal_; i++) {
@@ -1203,6 +1213,12 @@ static BOOL _mixerRateSet = NO;
 
 -(BOOL) rewind {
     alSourceRewind(_sourceId);
+    return CDSOUNDSOURCE_ERROR_HANDLER;
+}
+
+-(BOOL) setPositionMS:(int)timeMS {
+    NSTimeInterval timeS = timeMS / 1000.0;
+    alSourcei(_sourceId, AL_SEC_OFFSET, timeS);
     return CDSOUNDSOURCE_ERROR_HANDLER;
 }
 

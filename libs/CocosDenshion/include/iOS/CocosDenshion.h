@@ -155,6 +155,8 @@ typedef struct _sourceInfo {
 -(BOOL) stop;
 /** Return playback to beginning */
 -(BOOL) rewind;
+
+-(BOOL) setPositionMS:(int)timeMS;
 @end
 
 #pragma mark CDAudioInterruptProtocol
@@ -243,7 +245,7 @@ typedef struct _sourceInfo {
 -(id)init;
 
 /** Plays a sound in a channel group with a pitch, pan and gain. The sound could played looped or not */
--(ALuint) playSound:(int) soundId sourceGroupId:(int)sourceGroupId pitch:(float) pitch pan:(float) pan gain:(float) gain loop:(BOOL) loop;
+-(ALuint) playSound:(int) soundId sourceGroupId:(int)sourceGroupId pitch:(float)pitch offset:(float)offset pan:(float) pan gain:(float) gain loop:(BOOL) loop;
 
 /** Creates and returns a sound source object for the specified sound within the specified source group.
  */
@@ -261,6 +263,9 @@ typedef struct _sourceInfo {
 -(void) pauseAllSounds;
 /** Resume a sound */
 -(void) resumeSound:(ALuint) sourceId;
+
+-(void) setTimePositionMS:(ALuint) sourceId offset:(float)offset;
+
 /** Resume all sounds */
 -(void) resumeAllSounds;
 -(void) defineSourceGroups:(NSArray*) sourceGroupDefinitions;

@@ -113,6 +113,10 @@ static CDBufferManager *bufferManager = nil;
     [am rewindBackgroundMusic];
 }
 
+-(void) setPositionBackgroundMusic:(int)timeMS {
+    [am setPositionMS:timeMS];
+}
+
 -(BOOL) isBackgroundMusicPlaying {
     return [am isBackgroundMusicPlaying];
 }    
@@ -128,11 +132,11 @@ static CDBufferManager *bufferManager = nil;
     return [self playEffect:filePath loop:loop pitch:1.0f pan:0.0f gain:1.0f];
 }
 
--(ALuint) playEffect:(NSString*) filePath loop:(BOOL) loop pitch:(Float32) pitch pan:(Float32) pan gain:(Float32) gain
+-(ALuint) playEffect:(NSString*) filePath loop:(BOOL) loop pitch:(Float32) pitch pan:(Float32) pan offset:(Float32) offset gain:(Float32) gain
 {
     int soundId = [bufferManager bufferForFile:filePath create:YES];
     if (soundId != kCDNoBuffer) {
-        return [soundEngine playSound:soundId sourceGroupId:0 pitch:pitch pan:pan gain:gain loop:loop];
+        return [soundEngine playSound:soundId sourceGroupId:0 pitch:pitch offset:offset pan:pan gain:gain loop:loop];
     } else {
         return CD_MUTE;
     }    

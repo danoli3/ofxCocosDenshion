@@ -30,7 +30,7 @@ Requirements:
 
 //--------------------------------------------------
 struct SoundEffect {
-	SoundEffect(string location, int uid) {
+	SoundEffect(const string& location, int uid) {
 		path = location;
 		volume = 0.0f;
 		muted = false;
@@ -136,7 +136,9 @@ public:
 	~ofxCocosDenshion();
 	
 	
-	int addSoundEffect(string soundPath, float volume, bool bLoop=false);
+	int addSoundEffect(const string& soundPath, float volume, bool bLoop=false);
+    int addMusic(const string& musicPath, float volume, bool bLoop=false);
+    
 	void destroy();
 	
     void setup();
@@ -150,47 +152,72 @@ public:
 	//------------------------------ Sound Effects
 	
 	void playSound(int sourceId);
-	void playSound(string name);
+	void playSound(const string& name);
+    
+    void setPositionMS(int sourceId, float timeMS);
+    void setPositionMS(const string& name, float timeMS);
 	
 	void setSoundPan(int sourceId, float pan);
-	void setSoundPan(string name, float pan);
+	void setSoundPan(const string& name, float pan);
 	
 	void setSoundVolume(int sourceId, float pan);
-	void setSoundVolume(string name, float pan);
+	void setSoundVolume(const string& name, float pan);
 	
 	bool isSoundPlaying(int sourceId);
-	bool isSoundPlaying(string name);
+	bool isSoundPlaying(const string& name);
 	
 	/** Stops playing a sound */
 	void stopSound(int theID);
-	void stopSound(string name);
-
+	void stopSound(const string& name);
+    
 	/** Stops all playing sounds */
 	void stopAllSounds();
 	/** Pause a sound */
 	void pauseSound(int sourceId);
-	void pauseSound(string name);
+	void pauseSound(const string& name);
 	/** Pause all sounds */
 	void pauseAllSounds();
 	/** Resume a sound */
 	void resumeSound(int sourceId);
-	void resumeSound(string name);
+	void resumeSound(const string& name);
 	/** Resume all sounds */
 	void resumeAllSounds();
+    
+    SoundEffect* getSoundEffect(const int);
+    SoundEffect* getSoundEffect(const string pathName);
+    int getSoundEffectID(const string pathName);
+    
 	
 	//------------------------------- Background Music
+    
+    bool isMusicPlaying(int sourceId);
+    bool isMusicPlaying(const string& name);
+    
+    void setMusicPan(int sourceId, float pan);
+    void setMusicPan(const string& name, float pan);
+    
+    void setMusicVolume(int sourceId, float pan);
+    void setMusicVolume(const string& name, float pan);
+    
+    void pauseMusic(const string& name);
+    void resumeMusic(const string& name);
+    
+    void stopMusic(int theID);
+    void stopMusic(const string& name);
+    
+    SoundEffect* getMusic(const int);
+    SoundEffect* getMusic(const string pathName);
+    int getMusicID(const string pathName);
+
 	
 	
 	
 	//--------------------------------------------------
-	SoundEffect* getSoundEffect(const int);
-	SoundEffect* getSoundEffect(const string pathName);
-	int getSoundEffectID(const string pathName);
-	void loadSound(string soundPath, float volume, bool bLoop=false);
 	
 	bool isDeviceMuted();
 	
 	vector<SoundEffect*> sounds;
+    vector<SoundEffect*> music;
 	
 	//------------------------ (Call these before setup if you want to modify them)
 	void setManagerMode(int managerMode);

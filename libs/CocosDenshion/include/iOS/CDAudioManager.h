@@ -100,6 +100,7 @@ typedef enum {
     BOOL            backgroundMusic;
     // whether background music is paused
     BOOL            paused;
+    BOOL            stopped;
 @public    
     BOOL            systemPaused;//Used for auto resign handling
     NSTimeInterval    systemPauseLocation;//Used for auto resign handling
@@ -125,6 +126,8 @@ typedef enum {
 -(void) pause;
 /** Rewinds the audio source */
 -(void) rewind;
+/** Set the position of the audio to a set millisecond */
+-(void) setPositionMS:(int)timeMS;
 /** Resumes playing the audio source if it was paused */
 -(void) resume;
 /** Returns whether or not the audio source is playing */
