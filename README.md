@@ -7,7 +7,8 @@ Wrapper Class for Cocoas Denshion Sound Player to be used within openFrameWorks.
 
 This currently will work with iOS Projects.
 
-I found that the default ofxiOSSoundPlayer while great for single audio files being played, it really started to lag when playing multiple sounds all the time (say in a game environment). This was making the games drop about 10-25 FPS intermidently when playing sound.
+I found that the default AVSoundPlayer while great for single audio files being played, it really started to lag when playing multiple sounds all the time (say in a game environment), or you happen to call play on a sound effect for example.
+This was making the games drop about 10-25 FPS intermidently when playing sound. 
 
 Working in live iOS Projects:
 ===========
