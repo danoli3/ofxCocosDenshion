@@ -114,7 +114,7 @@ static CDBufferManager *bufferManager = nil;
 }
 
 -(void) setPositionBackgroundMusic:(int)timeMS {
-    [am setPositionMS:timeMS];
+    [am setBackgroundMusicPositionMS:timeMS];
 }
 
 -(BOOL) isBackgroundMusicPlaying {

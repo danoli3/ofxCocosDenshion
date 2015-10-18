@@ -133,9 +133,12 @@ void ofxCocosDenshion::stopMusic(int theID) {
 
 //--------------------------------------------------
 void ofxCocosDenshion::stopMusic(const string& name) {
+    [ofxCocosDenshionSoundManager stopSourceGroup:backgroundMusicChannel];
+    
     int uid = getMusicID(name);
     if(uid != -1) {
         stopMusic(uid);
+
     } else {
         ofLog(OF_LOG_ERROR, "ofxCocosDenshion::stopMusic:: Can't find " + name);
     }
@@ -321,7 +324,7 @@ void ofxCocosDenshion::setup() {
 	 have up to 32 effects at once
 	 */
     soundCount = 0;
-	NSArray *sourceGroups = [NSArray arrayWithObjects:[NSNumber numberWithInt:1], [NSNumber numberWithInt:31], nil];
+	NSArray *sourceGroups = [NSArray arrayWithObjects:[NSNumber numberWithInt:2], [NSNumber numberWithInt:31], nil];
 	[sse defineSourceGroups:sourceGroups];
 	
 	if(aSyncronous) {
@@ -335,7 +338,7 @@ void ofxCocosDenshion::setup() {
 //--------------------------------------------------
 void ofxCocosDenshion::loadAllAudio() {
 	
-	if(sounds.size() != 0) {
+	if(sounds.size() > 0 || music.size() > 0) {
 		
 		CDSoundEngine *sse = [CDAudioManager sharedManager].soundEngine;
 		NSMutableArray *loadRequests = [[[NSMutableArray alloc] init] autorelease];
@@ -354,6 +357,13 @@ void ofxCocosDenshion::loadAllAudio() {
 				[loadRequests addObject:[[[CDBufferLoadRequest alloc] init:toLoad->getID() filePath:[NSString stringWithUTF8String:toLoad->getPath().c_str()]] autorelease]];
 			}
 		}
+        unsigned long howManyMusic = music.size()-1;
+        for(int i=0;i<=howManyMusic;i++) {
+            if(music[i] != nullptr) {
+                SoundEffect* toLoad = music[i];
+                [loadRequests addObject:[[[CDBufferLoadRequest alloc] init:toLoad->getID() filePath:[NSString stringWithUTF8String:toLoad->getPath().c_str()]] autorelease]];
+            }
+        }
 		[sse loadBuffersAsynchronously:loadRequests];
 		
 	}
@@ -396,7 +406,7 @@ void ofxCocosDenshion::setIsSoundOn(bool isit)  {
 void ofxCocosDenshion::playSound(int sourceId) {
 	SoundEffect* sEffect = getSoundEffect(sourceId);
 	if(sEffect) {
-		[ofxCocosDenshionSoundManager playSound:sEffect->getID()
+		ALuint sID = [ofxCocosDenshionSoundManager playSound:sEffect->getID()
 									sourceGroupId:soundEffectsChannel
 											pitch:sEffect->getPitch()
                                               offset:0.0
@@ -416,18 +426,84 @@ void ofxCocosDenshion::playSound(const string& name) {
 	}
 }
 
-void ofxCocosDenshion::setPositionMS(int sourceId, float timeMS) {
+void ofxCocosDenshion::setPositionMS(int sourceId, int timeMS) {
     SoundEffect* sEffect = getSoundEffect(sourceId);
     if(sEffect) {
         [ofxCocosDenshionSoundManager setTimePositionMS:sourceId offset:timeMS];
     }
 }
-void ofxCocosDenshion::setPositionMS(const string& name, float timeMS) {
+void ofxCocosDenshion::setPositionMS(const string& name, int timeMS) {
     int uid = getSoundEffectID(name);
     if(uid != -1) {
         setPositionMS(uid, timeMS);
     } else {
-        ofLog(OF_LOG_ERROR, "ofxCocosDenshion::playSound:: Can't find " + name);
+        ofLog(OF_LOG_ERROR, "ofxCocosDenshion::setPositionMS:: Can't find " + name);
+    }
+}
+
+
+void ofxCocosDenshion::playMusic(int sourceId) {
+    if(isMusicPlaying(sourceId))  {
+        setMusicPositionMS(sourceId, 0);
+    } else {
+        SoundEffect* sEffect = getMusic(sourceId);
+        if(sEffect) {
+           ALuint sID = [ofxCocosDenshionSoundManager playSound:sEffect->getID()
+                                      sourceGroupId:backgroundMusicChannel
+                                              pitch:sEffect->getPitch()
+                                             offset:0.0
+                                                pan:sEffect->getPan()
+                                               gain:sEffect->getVolume()
+                                               loop:sEffect->isLooped()];
+        }
+    }
+}
+void ofxCocosDenshion::playMusic(const string& name) {
+    int uid = getMusicID(name);
+    if(uid != -1) {
+        playMusic(uid);
+    } else {
+        ofLog(OF_LOG_ERROR, "ofxCocosDenshion::playMusic:: Can't find " + name);
+    }
+}
+
+void ofxCocosDenshion::playMusic(int sourceId, int timeMS) {
+    if(isMusicPlaying(sourceId))  {
+        setMusicPositionMS(sourceId, 0);
+    } else {
+        SoundEffect* sEffect = getMusic(sourceId);
+        if(sEffect) {
+            ALuint sID = [ofxCocosDenshionSoundManager playSound:sEffect->getID()
+                                      sourceGroupId:backgroundMusicChannel
+                                              pitch:sEffect->getPitch()
+                                             offset:timeMS
+                                                pan:sEffect->getPan()
+                                               gain:sEffect->getVolume()
+                                               loop:sEffect->isLooped()];
+        }
+    }
+}
+void ofxCocosDenshion::playMusic(const string& name, int timeMS) {
+    int uid = getMusicID(name);
+    if(uid != -1) {
+        playMusic(uid, timeMS);
+    } else {
+        ofLog(OF_LOG_ERROR, "ofxCocosDenshion::playMusic:: Can't find " + name);
+    }
+}
+
+void ofxCocosDenshion::setMusicPositionMS(int sourceId, int timeMS){
+    SoundEffect* sEffect = getMusic(sourceId);
+    if(sEffect) {
+        [ofxCocosDenshionSoundManager setTimePositionMS:sourceId offset:timeMS];
+    }
+}
+void ofxCocosDenshion::setMusicPositionMS(const string& name, int timeMS){
+    int uid = getMusicID(name);
+    if(uid != -1) {
+        setMusicPositionMS(uid, timeMS);
+    } else {
+        ofLog(OF_LOG_ERROR, "ofxCocosDenshion::setMusicPositionMS:: Can't find " + name);
     }
 }
 

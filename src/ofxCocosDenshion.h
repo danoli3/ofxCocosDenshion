@@ -26,6 +26,7 @@ Requirements:
 
 
 #define ofxCocosDenshionSoundManager [CDAudioManager sharedManager].soundEngine
+#define ofxCocosDenshionMusicManager [CDAudioManager sharedManager].backgroundMusic
 
 
 //--------------------------------------------------
@@ -119,8 +120,9 @@ struct SoundEffect {
 	
 };
 
-
 static int soundCount;
+static int musicCount;
+
 //------------------------------------------------------------
 class ofxCocosDenshion {
 public:
@@ -154,8 +156,8 @@ public:
 	void playSound(int sourceId);
 	void playSound(const string& name);
     
-    void setPositionMS(int sourceId, float timeMS);
-    void setPositionMS(const string& name, float timeMS);
+    void setPositionMS(int sourceId, int timeMS);
+    void setPositionMS(const string& name, int timeMS);
 	
 	void setSoundPan(int sourceId, float pan);
 	void setSoundPan(const string& name, float pan);
@@ -189,6 +191,15 @@ public:
     
 	
 	//------------------------------- Background Music
+    
+    void playMusic(int sourceId);
+    void playMusic(const string& name);
+    
+    void playMusic(int sourceId, int timeMS);
+    void playMusic(const string& name, int timeMS);
+    
+    void setMusicPositionMS(int sourceId, int timeMS);
+    void setMusicPositionMS(const string& name, int timeMS);
     
     bool isMusicPlaying(int sourceId);
     bool isMusicPlaying(const string& name);

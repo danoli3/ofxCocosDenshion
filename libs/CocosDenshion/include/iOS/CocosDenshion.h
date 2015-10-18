@@ -245,7 +245,7 @@ typedef struct _sourceInfo {
 -(id)init;
 
 /** Plays a sound in a channel group with a pitch, pan and gain. The sound could played looped or not */
--(ALuint) playSound:(int) soundId sourceGroupId:(int)sourceGroupId pitch:(float)pitch offset:(float)offset pan:(float) pan gain:(float) gain loop:(BOOL) loop;
+-(ALuint) playSound:(int) soundId sourceGroupId:(int)sourceGroupId pitch:(float)pitch offset:(int)offset pan:(float) pan gain:(float) gain loop:(BOOL) loop;
 
 /** Creates and returns a sound source object for the specified sound within the specified source group.
  */
@@ -264,7 +264,7 @@ typedef struct _sourceInfo {
 /** Resume a sound */
 -(void) resumeSound:(ALuint) sourceId;
 
--(void) setTimePositionMS:(ALuint) sourceId offset:(float)offset;
+-(void) setTimePositionMS:(ALuint) sourceId offset:(int)offset;
 
 /** Resume all sounds */
 -(void) resumeAllSounds;

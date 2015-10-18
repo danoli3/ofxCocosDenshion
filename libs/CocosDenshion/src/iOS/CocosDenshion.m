@@ -817,7 +817,7 @@ static BOOL _mixerRateSet = NO;
  * or CD_NO_SOURCE if a problem occurs setting up the source
  * 
  */
-- (ALuint)playSound:(int) soundId sourceGroupId:(int)sourceGroupId pitch:(float) pitch offset:(float)offset pan:(float) pan gain:(float) gain loop:(BOOL) loop {
+- (ALuint)playSound:(int) soundId sourceGroupId:(int)sourceGroupId pitch:(float) pitch offset:(int)offset pan:(float) pan gain:(float) gain loop:(BOOL) loop {
 
 #ifdef CD_DEBUG
     //Sanity check parameters - only in DEBUG
@@ -840,7 +840,12 @@ static BOOL _mixerRateSet = NO;
         }    
 #endif        
         return CD_MUTE;
-    }    
+    }
+    
+    int toSeconds = offset;
+    if(offset != 0) {
+        toSeconds = offset / 1000.0;
+    }
 
     int sourceIndex = [self _getSourceIndexForSourceGroup:sourceGroupId];//This method ensures sourceIndex is valid
     
@@ -859,7 +864,7 @@ static BOOL _mixerRateSet = NO;
         alSourcef(source, AL_GAIN, gain);//Set gain/volume
         float sourcePosAL[] = {pan, 0.0f, 0.0f};//Set position - just using left and right panning
         alSourcefv(source, AL_POSITION, sourcePosAL);
-        alSourcei(source, AL_SEC_OFFSET, offset);
+        alSourcei(source, AL_SEC_OFFSET, toSeconds);
         alGetError();//Clear the error code
         alSourcePlay(source);
         if((lastErrorCode_ = alGetError()) == AL_NO_ERROR) {
@@ -1005,8 +1010,12 @@ static BOOL _mixerRateSet = NO;
 }
 
 
--(void) setTimePositionMS:(ALuint) sourceId offset:(float)offset {
-    NSTimeInterval timeS = offset / 1000.0;
+-(void) setTimePositionMS:(ALuint) sourceId offset:(int)offset {
+    int toSeconds = offset;
+    if(offset != 0) {
+        toSeconds = offset / 1000.0;
+    }
+    NSTimeInterval timeS = toSeconds;
     alSourcei(sourceId, AL_SEC_OFFSET, timeS);
     alGetError();
 }
@@ -1217,7 +1226,11 @@ static BOOL _mixerRateSet = NO;
 }
 
 -(BOOL) setPositionMS:(int)timeMS {
-    NSTimeInterval timeS = timeMS / 1000.0;
+    int toSeconds = timeMS;
+    if(timeMS != 0) {
+        toSeconds = timeMS / 1000.0;
+    }
+    NSTimeInterval timeS = toSeconds;
     alSourcei(_sourceId, AL_SEC_OFFSET, timeS);
     return CDSOUNDSOURCE_ERROR_HANDLER;
 }

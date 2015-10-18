@@ -123,7 +123,11 @@ NSString * const kCDN_AudioManagerInitialised = @"kCDN_AudioManagerInitialised";
 }
 
 -(void) setPositionMS:(int)timeMS {
-    NSTimeInterval timeS = timeMS / 1000.0;
+    int toSeconds = timeMS;
+    if(timeMS != 0) {
+        toSeconds = timeMS / 1000.0;
+    }
+    NSTimeInterval timeS = toSeconds;
     paused = NO;
     [audioSourcePlayer setCurrentTime:timeS];
     [audioSourcePlayer play];
@@ -606,7 +610,7 @@ static BOOL configured = FALSE;
     [self.backgroundMusic rewind];
 }
 
--(void) setPositionMS:(int)timeMS
+-(void) setBackgroundMusicPositionMS:(int)timeMS
 {
     [self.backgroundMusic setPositionMS:timeMS];
 }
