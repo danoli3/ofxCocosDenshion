@@ -338,7 +338,7 @@ void ofxCocosDenshion::setup() {
 //--------------------------------------------------
 void ofxCocosDenshion::loadAllAudio() {
 	
-	if(sounds.size() > 0 || music.size() > 0) {
+if(sounds.size() > 0 || music.size() > 0) {
 		
 		CDSoundEngine *sse = [CDAudioManager sharedManager].soundEngine;
 		NSMutableArray *loadRequests = [[[NSMutableArray alloc] init] autorelease];
@@ -349,24 +349,31 @@ void ofxCocosDenshion::loadAllAudio() {
 		 and the file path.  Pretty straightforward here.
 		 */
 		//[loadRequests addObject:[[[CDBufferLoadRequest alloc] init:SND_BG_LOOP filePath:@"bgmusic.mp3"] autorelease]];
-			
-		unsigned long howManySounds = sounds.size()-1;
-		for(int i=0;i<=howManySounds;i++) {
-			if(sounds[i] != nullptr) {
-				SoundEffect* toLoad = sounds[i];
-				[loadRequests addObject:[[[CDBufferLoadRequest alloc] init:toLoad->getID() filePath:[NSString stringWithUTF8String:toLoad->getPath().c_str()]] autorelease]];
-			}
-		}
-        unsigned long howManyMusic = music.size()-1;
-        for(int i=0;i<=howManyMusic;i++) {
-            if(music[i] != nullptr) {
-                SoundEffect* toLoad = music[i];
-                [loadRequests addObject:[[[CDBufferLoadRequest alloc] init:toLoad->getID() filePath:[NSString stringWithUTF8String:toLoad->getPath().c_str()]] autorelease]];
+		
+        if(sounds.size() > 0) {
+            unsigned long howManySounds = sounds.size()-1;
+            for(int i=0;i<=howManySounds;i++) {
+                if(sounds[i] != nullptr) {
+                    SoundEffect* toLoad = sounds[i];
+                    [loadRequests addObject:[[[CDBufferLoadRequest alloc] init:toLoad->getID() filePath:[NSString stringWithUTF8String:toLoad->getPath().c_str()]] autorelease]];
+                }
             }
         }
+        
+        if(music.size() > 0) {
+            unsigned long howManyMusic = music.size()-1;
+            for(int i=0;i<=howManyMusic;i++) {
+                if(music[i] != nullptr) {
+                    SoundEffect* toLoad = music[i];
+                    [loadRequests addObject:[[[CDBufferLoadRequest alloc] init:toLoad->getID() filePath:[NSString stringWithUTF8String:toLoad->getPath().c_str()]] autorelease]];
+                }
+            }
+       }
+        
 		[sse loadBuffersAsynchronously:loadRequests];
 		
-	}
+    }
+
 
 }
 
